@@ -4,23 +4,23 @@ interface Props {
   children: React.ReactNode;
 }
 
-export interface ITodoList {
+export interface TodoList {
   id: number | string;
   text: string;
 }
 
-interface ITodoContext {
-  todoList: ITodoList[];
-  handleAddTodoList: (text: string) => void;
+interface TodoContext {
+  todoList: TodoList[];
+  handleAddTodoList(text: string): void;
 }
 
-export const TodoContext = createContext<ITodoContext>({
+export const TodoContext = createContext<TodoContext>({
   todoList: [],
   handleAddTodoList: (text: string) => {},
 });
 
 export const TodoProvider = ({ children }: Props) => {
-  const [todoList, setTodoList] = useState<ITodoList[]>([]);
+  const [todoList, setTodoList] = useState<TodoList[]>([]);
 
   const handleAddTodoList = (text: string) => {
     const listId: number = Date.now();
@@ -30,7 +30,7 @@ export const TodoProvider = ({ children }: Props) => {
   const contextValue = {
     todoList,
     handleAddTodoList,
-  } as ITodoContext;
+  } as TodoContext;
 
   return (
     <TodoContext.Provider value={contextValue}>{children}</TodoContext.Provider>
