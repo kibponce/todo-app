@@ -4,13 +4,13 @@ import Button from "../components/Button";
 
 const TodoInput = () => {
   const { handleAddTodo } = useContext(TodoContext);
-  const [listText, setListText] = useState<string>("");
+  const [todoText, setTodoText] = useState<string>("");
 
   const onClickAddTodoList = (e: React.MouseEvent<HTMLButtonElement>) => {
-    handleAddTodo(listText);
+    handleAddTodo(todoText);
 
     // clear input
-    setListText("");
+    setTodoText("");
   };
 
   return (
@@ -21,8 +21,8 @@ const TodoInput = () => {
         id="price"
         className="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-90 focus:outline-none"
         placeholder="Add your To Do List"
-        value={listText}
-        onChange={(e) => setListText(e.target.value)}
+        value={todoText}
+        onChange={(e) => setTodoText(e.target.value)}
       />
 
       <Button label="ADD" color="blue" onClick={onClickAddTodoList} />
