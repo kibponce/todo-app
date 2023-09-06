@@ -1,28 +1,16 @@
 import { useContext } from "react";
 import { TodoContext } from "../context/TodoProvider";
-import IconButton from "../components/IconButton";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import IconButton from "../components/IconButton";
+import List from "./Lists";
 
-const TodoList = () => {
-  const { todoList } = useContext(TodoContext);
+const TodoLists = () => {
+  const { todoLists } = useContext(TodoContext);
 
   return (
     <div className="flex mt-6">
       <div className="w-2/5 pr-6">
-        <ul>
-          <li className="flex justify-between items-center py-4 my-2 px-2 rounded-md hover:bg-blue-100">
-            <div>
-              <p>Hello List here</p>
-            </div>
-            <IconButton icon={<TrashIcon className="text-red-600 w-6" />} />
-          </li>
-          <li className="flex justify-between items-center py-4  my-2 px-2 rounded-md hover:bg-blue-100">
-            <div>
-              <p>Hello List here</p>
-            </div>
-            <IconButton icon={<TrashIcon className="text-red-600 w-6" />} />
-          </li>
-        </ul>
+        <List />
       </div>
       <div className="w-3/5">
         <div className="flex mt-2 rounded-md shadow-sm h-12 border border-slate-400">
@@ -52,4 +40,4 @@ const TodoList = () => {
   );
 };
 
-export default TodoList;
+export default TodoLists;

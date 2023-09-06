@@ -1,5 +1,5 @@
-import TodoList from "./TodoList";
-import TodoListInput from "./TodoListInput";
+import TodoLists from "./TodoLists";
+import TodoInput from "./TodoInput";
 
 function Todo() {
   return (
@@ -7,9 +7,9 @@ function Todo() {
       <h1 className="text-3xl font-bold ">To Do App</h1>
       <div className="mt-6">
         {/* TO DO ADD INPUT */}
-        <TodoListInput />
+        <TodoInput />
         {/* TO DO LIST */}
-        <TodoList />
+        <TodoLists />
       </div>
     </div>
   );

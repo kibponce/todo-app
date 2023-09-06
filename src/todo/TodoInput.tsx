@@ -2,12 +2,12 @@ import { useContext, useState } from "react";
 import { TodoContext } from "../context/TodoProvider";
 import Button from "../components/Button";
 
-const TodoListInput = () => {
-  const { handleAddTodoList } = useContext(TodoContext);
+const TodoInput = () => {
+  const { handleAddTodo } = useContext(TodoContext);
   const [listText, setListText] = useState<string>("");
 
   const onClickAddTodoList = (e: React.MouseEvent<HTMLButtonElement>) => {
-    handleAddTodoList(listText);
+    handleAddTodo(listText);
 
     // clear input
     setListText("");
@@ -30,4 +30,4 @@ const TodoListInput = () => {
   );
 };
 
-export default TodoListInput;
+export default TodoInput;
