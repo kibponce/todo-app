@@ -69,14 +69,23 @@ const ListItems = () => {
         {selectedTodo && selectedTodo.items.length > 0 && (
           <ul className="rounded-md divide-y divide-slate-400 border border-slate-400">
             {selectedTodo.items.map((item, index) => (
-              <li key={index} className="flex p-4">
+              <li
+                key={index}
+                className={`flex p-4 first:rounded-md first:rounded-t-md last:rounded-b-md ${
+                  item.isDone && "bg-slate-100"
+                }`}
+              >
                 <input
                   type="checkbox"
                   className="cursor-pointer"
                   onChange={(e) => onItemCheck(e, item)}
                   checked={item.isDone}
                 />
-                <p className={`ml-4 ${item.isDone && "line-through italic"}`}>
+                <p
+                  className={`ml-4 ${
+                    item.isDone && "line-through italic text-slate-600"
+                  }`}
+                >
                   {item.text}
                 </p>
               </li>
