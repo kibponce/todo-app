@@ -32,23 +32,22 @@ const Lists = () => {
           } hover:bg-blue-100`}
           onClick={(e) => onPressTodo(todo)}
         >
-          <div className="flex">
-            <div className="flex items-center">
-              {!!checkIsDone(todo.items) && (
-                <CheckIcon className="text-green-600 w-5 mr-2" />
-              )}
-              {!checkIsDone(todo.items) && (
-                <XMarkIcon className="text-red-600 w-5 mr-2" />
-              )}
+          <div className="flex flex-col">
+            <div className="flex">
+              <div className="flex items-center">
+                {!!checkIsDone(todo.items) && (
+                  <CheckIcon className="text-green-600 w-5 mr-2" />
+                )}
+                {!checkIsDone(todo.items) && (
+                  <XMarkIcon className="text-red-600 w-5 mr-2" />
+                )}
+              </div>
+              <p>{todo.text}</p>
             </div>
-            <p>{todo.text}</p>
           </div>
-          <div className="flex">
-            <p className="mr-2">{`${
-              todo.items.filter((item) => item.isDone).length
-            }/${todo.items.length}`}</p>
+          <div className="flex items-center">
             <IconButton
-              icon={<TrashIcon className="text-red-600 w-6" />}
+              icon={<TrashIcon className="text-red-600 w-5" />}
               onClick={(e) => onPressRemoveTodo(e, todo)}
             />
           </div>

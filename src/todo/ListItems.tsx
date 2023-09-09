@@ -32,6 +32,17 @@ const ListItems = () => {
     }
   };
 
+  const ItemsRemaining = ({ data }: { data: TodoItem[] }) => {
+    const remaining = data.length - data.filter((item) => item.isDone).length;
+
+    return (
+      <div className="text-sm mt-4 text-right">
+        <label className="mr-2">{remaining}</label>
+        <label>item(s) left</label>
+      </div>
+    );
+  };
+
   return (
     <>
       <div className="flex mt-2 rounded-md shadow-sm h-12 border border-slate-400">
@@ -50,7 +61,11 @@ const ListItems = () => {
           onClick={onAddTodoListItem}
         />
       </div>
-      <div className="mt-4">
+      {selectedTodo && selectedTodo.items.length > 0 && (
+        <ItemsRemaining data={selectedTodo.items} />
+      )}
+
+      <div className="mt-2">
         {selectedTodo && selectedTodo.items.length > 0 && (
           <ul className="rounded-md divide-y divide-slate-400 border border-slate-400">
             {selectedTodo.items.map((item, index) => (

@@ -33,7 +33,7 @@ const TodoInput = () => {
   return (
     <div>
       <div
-        className={`flex mt-2 rounded-md shadow-sm h-12 border  ${
+        className={`flex mt-2 rounded-md shadow-sm h-18 border  ${
           isError ? "border-red-400" : "border-slate-400"
         }`}
       >
@@ -41,22 +41,11 @@ const TodoInput = () => {
           type="text"
           name="price"
           id="price"
-          className="block w-full rounded-md border-0py-1.5 pl-4 pr-20 text-gray-90 focus:outline-none"
+          className="block w-full rounded-md border-0py-1.5 pl-4 h-16 pr-20 text-gray-90 text-2xl focus:outline-none"
           placeholder="Add Task"
           value={todoText}
           onChange={onInputChange}
           onKeyDown={onKeyDown}
-        />
-
-        <Button
-          label={
-            <div className="flex items-center">
-              <PlusCircleIcon className="w-6 mr-2" />
-              <p>Add</p>
-            </div>
-          }
-          color="blue"
-          onClick={onClickAddTodoList}
         />
       </div>
       {isError && (
