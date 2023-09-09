@@ -43,7 +43,13 @@ export const TodoProvider = ({ children }: Props) => {
 
   const handleAddTodo = (text: string) => {
     const listId: number = Date.now();
-    setTodoLists([...todoLists, { id: listId, text: text, items: [] }]);
+    const todoList = { id: listId, text: text, items: [] } as Todo;
+
+    if (todoLists.length === 0) {
+      setSelectedTodo(todoList);
+    }
+
+    setTodoLists([...todoLists, todoList]);
   };
 
   const handleSelectTodo = (todo: Todo) => {

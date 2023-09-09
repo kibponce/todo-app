@@ -1,7 +1,7 @@
 import { useContext, MouseEvent } from "react";
-import { TodoContext, Todo } from "../context/TodoProvider";
+import { TodoContext, Todo, TodoItem } from "../context/TodoProvider";
 import IconButton from "../components/IconButton";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const Lists = () => {
   const { todoLists, selectedTodo, handleSelectTodo, handleRemoveTodo } =
@@ -16,6 +16,12 @@ const Lists = () => {
     handleRemoveTodo(todo);
   };
 
+  const checkIsDone = (data: TodoItem[]) => {
+    return data.length !== 0
+      ? data.length === data.filter((item) => item.isDone).length
+      : false;
+  };
+
   return (
     <ul>
       {todoLists.map((todo, index) => (
@@ -26,7 +32,15 @@ const Lists = () => {
           } hover:bg-blue-100`}
           onClick={(e) => onPressTodo(todo)}
         >
-          <div>
+          <div className="flex">
+            <div className="flex items-center">
+              {!!checkIsDone(todo.items) && (
+                <CheckIcon className="text-green-600 w-5 mr-2" />
+              )}
+              {!checkIsDone(todo.items) && (
+                <XMarkIcon className="text-red-600 w-5 mr-2" />
+              )}
+            </div>
             <p>{todo.text}</p>
           </div>
           <div className="flex">

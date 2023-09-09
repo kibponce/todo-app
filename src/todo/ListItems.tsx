@@ -27,7 +27,7 @@ const ListItems = () => {
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       onAddTodoListItem();
     }
   };
@@ -51,9 +51,9 @@ const ListItems = () => {
         />
       </div>
       <div className="mt-4">
-        <ul className="rounded-md divide-y divide-slate-400 border border-slate-400">
-          {selectedTodo &&
-            selectedTodo.items.map((item, index) => (
+        {selectedTodo && selectedTodo.items.length > 0 && (
+          <ul className="rounded-md divide-y divide-slate-400 border border-slate-400">
+            {selectedTodo.items.map((item, index) => (
               <li key={index} className="flex p-4">
                 <input
                   type="checkbox"
@@ -61,12 +61,13 @@ const ListItems = () => {
                   onChange={(e) => onItemCheck(e, item)}
                   checked={item.isDone}
                 />
-                <p className={`ml-4 ${item.isDone && "line-through"}`}>
+                <p className={`ml-4 ${item.isDone && "line-through italic"}`}>
                   {item.text}
                 </p>
               </li>
             ))}
-        </ul>
+          </ul>
+        )}
       </div>
     </>
   );
