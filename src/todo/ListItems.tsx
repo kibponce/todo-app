@@ -11,7 +11,7 @@ const ListItems = () => {
 
   const onAddTodoListItem = () => {
     if (listItemText.length > 0) {
-      handleAddTodoItems(listItemText);
+      handleAddTodoItems && handleAddTodoItems(listItemText);
     } else {
       setIsError(true);
     }
@@ -27,7 +27,7 @@ const ListItems = () => {
     let newItem: TodoItem = { ...todoItem };
     newItem.isDone = e.target.checked;
 
-    handleCompleteItem(newItem);
+    handleCompleteItem && handleCompleteItem(newItem);
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

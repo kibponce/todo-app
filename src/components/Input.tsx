@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, useMemo } from "react";
+import { InputHTMLAttributes, FC, useMemo } from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   inputSize: "sm" | "md" | "lg";
@@ -6,7 +6,12 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
 }
 
-function Input({ inputSize, isError, errorMessage, ...props }: InputProps) {
+const Input: FC<InputProps> = ({
+  inputSize,
+  isError,
+  errorMessage,
+  ...props
+}) => {
   const size = useMemo(() => {
     switch (inputSize) {
       case "sm":
@@ -37,6 +42,6 @@ function Input({ inputSize, isError, errorMessage, ...props }: InputProps) {
       )}
     </div>
   );
-}
+};
 
 export default Input;

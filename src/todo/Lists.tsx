@@ -8,12 +8,12 @@ const Lists = () => {
     useContext(TodoContext);
 
   const onPressTodo = (todo: Todo) => {
-    handleSelectTodo(todo);
+    handleSelectTodo && handleSelectTodo(todo);
   };
 
   const onPressRemoveTodo = (e: MouseEvent<HTMLButtonElement>, todo: Todo) => {
     e.stopPropagation();
-    handleRemoveTodo(todo);
+    handleRemoveTodo && handleRemoveTodo(todo);
   };
 
   const checkIsDone = (data: TodoItem[]) => {

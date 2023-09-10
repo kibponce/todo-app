@@ -19,22 +19,17 @@ export interface TodoItem {
 interface iTodoContext {
   todoLists: Todo[];
   selectedTodo: Todo | null;
-  handleAddTodo(text: string): void;
-  handleSelectTodo(todo: Todo): void;
-  handleRemoveTodo(todo: Todo): void;
-  handleAddTodoItems(todoItemText: string): void;
-  handleCompleteItem(todoItem: TodoItem): void;
+  handleAddTodo?(text: string): void;
+  handleSelectTodo?(todo: Todo): void;
+  handleRemoveTodo?(todo: Todo): void;
+  handleAddTodoItems?(todoItemText: string): void;
+  handleCompleteItem?(todoItem: TodoItem): void;
 }
 
 export const TodoContext = createContext<iTodoContext>({
   // default values
   todoLists: [],
   selectedTodo: null,
-  handleAddTodo: (text: string) => {},
-  handleSelectTodo: (todo: Todo) => {},
-  handleRemoveTodo: (todo: Todo) => {},
-  handleAddTodoItems: (todoItemText: string) => {},
-  handleCompleteItem: (todoItem: TodoItem) => {},
 });
 
 export const TodoProvider = ({ children }: Props) => {
