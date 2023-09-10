@@ -1,7 +1,6 @@
 import { useContext, useState, ChangeEvent, KeyboardEvent } from "react";
 import { TodoContext } from "../context/TodoProvider";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import Button from "../components/Button";
+import Input from "../components/Input";
 
 const TodoInput = () => {
   const { handleAddTodo } = useContext(TodoContext);
@@ -31,27 +30,18 @@ const TodoInput = () => {
   };
 
   return (
-    <div>
-      <div
-        className={`flex mt-2 rounded-md shadow-sm h-18 border  ${
-          isError ? "border-red-400" : "border-slate-400"
-        }`}
-      >
-        <input
-          type="text"
-          name="price"
-          id="price"
-          className="block w-full rounded-md border-0py-1.5 pl-4 h-16 pr-20 text-gray-90 text-2xl focus:outline-none"
-          placeholder="Add Task"
-          value={todoText}
-          onChange={onInputChange}
-          onKeyDown={onKeyDown}
-        />
-      </div>
-      {isError && (
-        <p className="text-sm mt-2 text-red-600">Input should not be empty</p>
-      )}
-    </div>
+    <Input
+      type="text"
+      name="price"
+      id="price"
+      placeholder="Add Task"
+      inputSize="lg"
+      value={todoText}
+      onChange={onInputChange}
+      onKeyDown={onKeyDown}
+      isError={isError}
+      errorMessage="Input should not be empty"
+    />
   );
 };
 

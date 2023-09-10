@@ -1,6 +1,6 @@
 import { useContext, MouseEvent } from "react";
 import { TodoContext, Todo, TodoItem } from "../context/TodoProvider";
-import IconButton from "../components/IconButton";
+import Button from "../components/Button";
 import { TrashIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const Lists = () => {
@@ -23,7 +23,7 @@ const Lists = () => {
   };
 
   return (
-    <ul>
+    <ul className="w-full lg:w-2/5 lg:pr-6">
       {todoLists.map((todo, index) => (
         <li
           key={index}
@@ -46,8 +46,8 @@ const Lists = () => {
             </div>
           </div>
           <div className="flex items-center">
-            <IconButton
-              icon={<TrashIcon className="text-red-600 w-5" />}
+            <Button
+              label={<TrashIcon className="text-red-600 w-5" />}
               onClick={(e) => onPressRemoveTodo(e, todo)}
             />
           </div>

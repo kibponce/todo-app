@@ -1,16 +1,20 @@
 import { useState, KeyboardEvent, ChangeEvent } from "react";
 import { useContext } from "react";
 import { TodoContext, TodoItem } from "../context/TodoProvider";
-import { PlusIcon } from "@heroicons/react/24/outline";
-import IconButton from "../components/IconButton";
+import Input from "../components/Input";
 
 const ListItems = () => {
   const { selectedTodo, handleAddTodoItems, handleCompleteItem } =
     useContext(TodoContext);
   const [listItemText, setListItemText] = useState<string>("");
+  const [isError, setIsError] = useState(false);
 
   const onAddTodoListItem = () => {
-    handleAddTodoItems(listItemText);
+    if (listItemText.length > 0) {
+      handleAddTodoItems(listItemText);
+    } else {
+      setIsError(true);
+    }
 
     // clear input
     setListItemText("");
@@ -32,6 +36,11 @@ const ListItems = () => {
     }
   };
 
+  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsError(false);
+    setListItemText(e.target.value);
+  };
+
   const ItemsRemaining = ({ data }: { data: TodoItem[] }) => {
     const remaining = data.length - data.filter((item) => item.isDone).length;
 
@@ -44,56 +53,54 @@ const ListItems = () => {
   };
 
   return (
-    <>
-      <div className="flex mt-2 rounded-md shadow-sm h-12 border border-slate-400">
-        <input
+    selectedTodo && (
+      <div className="w-full mt-8 lg:w-3/5 lg:mt-0">
+        <Input
           type="text"
           name="price"
           id="price"
-          className="block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-90 focus:outline-none"
+          inputSize="md"
           placeholder="Add Items"
           value={listItemText}
-          onChange={(e) => setListItemText(e.target.value)}
+          onChange={onInputChange}
           onKeyDown={onKeyDown}
+          isError={isError}
+          errorMessage="Input should not be empty"
         />
-        <IconButton
-          icon={<PlusIcon className="text-blue-600 w-6 mr-2" />}
-          onClick={onAddTodoListItem}
-        />
-      </div>
-      {selectedTodo && selectedTodo.items.length > 0 && (
-        <ItemsRemaining data={selectedTodo.items} />
-      )}
-
-      <div className="mt-2">
         {selectedTodo && selectedTodo.items.length > 0 && (
-          <ul className="rounded-md divide-y divide-slate-400 border border-slate-400">
-            {selectedTodo.items.map((item, index) => (
-              <li
-                key={index}
-                className={`flex p-4 first:rounded-md first:rounded-t-md last:rounded-b-md ${
-                  item.isDone && "bg-slate-100"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  className="cursor-pointer"
-                  onChange={(e) => onItemCheck(e, item)}
-                  checked={item.isDone}
-                />
-                <p
-                  className={`ml-4 ${
-                    item.isDone && "line-through italic text-slate-600"
+          <ItemsRemaining data={selectedTodo.items} />
+        )}
+
+        <div className="mt-2">
+          {selectedTodo && selectedTodo.items.length > 0 && (
+            <ul className="rounded-md divide-y divide-slate-400 border border-slate-400">
+              {selectedTodo.items.map((item, index) => (
+                <li
+                  key={index}
+                  className={`flex p-4 first:rounded-md first:rounded-t-md last:rounded-b-md ${
+                    item.isDone && "bg-slate-100"
                   }`}
                 >
-                  {item.text}
-                </p>
-              </li>
-            ))}
-          </ul>
-        )}
+                  <input
+                    type="checkbox"
+                    className="cursor-pointer"
+                    onChange={(e) => onItemCheck(e, item)}
+                    checked={item.isDone}
+                  />
+                  <p
+                    className={`ml-4 ${
+                      item.isDone && "line-through italic text-slate-600"
+                    }`}
+                  >
+                    {item.text}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
-    </>
+    )
   );
 };
 
