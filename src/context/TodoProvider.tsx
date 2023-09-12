@@ -52,9 +52,10 @@ export const TodoProvider = ({ children }: Props) => {
   };
 
   const handleRemoveTodo = (todo: Todo) => {
+    // create a deep copy and remove
     const filteredTodos = [...todoLists].filter((item) => item.id !== todo.id);
 
-    setTodoLists([...filteredTodos]);
+    setTodoLists(filteredTodos);
     setSelectedTodo(filteredTodos[filteredTodos.length - 1]);
   };
 
