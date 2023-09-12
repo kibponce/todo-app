@@ -1,11 +1,11 @@
 import { useState, KeyboardEvent, ChangeEvent } from "react";
 import { useContext } from "react";
 import { TodoContext, TodoItem } from "../context/TodoProvider";
+import ListItemLists from "./ListItemLists";
 import Input from "../components/Input";
 
 const ListItems = () => {
-  const { selectedTodo, handleAddTodoItems, handleCompleteItem } =
-    useContext(TodoContext);
+  const { selectedTodo, handleAddTodoItems } = useContext(TodoContext);
   const [listItemText, setListItemText] = useState<string>("");
   const [isError, setIsError] = useState(false);
   console.log("render todo list item");
@@ -18,16 +18,6 @@ const ListItems = () => {
 
     // clear input
     setListItemText("");
-  };
-
-  const onItemCheck = (
-    e: ChangeEvent<HTMLInputElement>,
-    todoItem: TodoItem
-  ) => {
-    let newItem: TodoItem = { ...todoItem };
-    newItem.isDone = e.target.checked;
-
-    handleCompleteItem && handleCompleteItem(newItem);
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -71,34 +61,7 @@ const ListItems = () => {
           <ItemsRemaining data={selectedTodo.items} />
         )}
 
-        <div className="mt-2">
-          {selectedTodo && selectedTodo.items.length > 0 && (
-            <ul className="rounded-md divide-y divide-slate-400 border border-slate-400">
-              {selectedTodo.items.map((item, index) => (
-                <li
-                  key={index}
-                  className={`flex p-4 first:rounded-md first:rounded-t-md last:rounded-b-md ${
-                    item.isDone && "bg-slate-100"
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    className="cursor-pointer"
-                    onChange={(e) => onItemCheck(e, item)}
-                    checked={item.isDone}
-                  />
-                  <p
-                    className={`ml-4 ${
-                      item.isDone && "line-through italic text-slate-600"
-                    }`}
-                  >
-                    {item.text}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        {selectedTodo && <ListItemLists items={selectedTodo.items} />}
       </div>
     )
   );
