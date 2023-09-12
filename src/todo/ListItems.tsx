@@ -8,7 +8,7 @@ const ListItems = () => {
     useContext(TodoContext);
   const [listItemText, setListItemText] = useState<string>("");
   const [isError, setIsError] = useState(false);
-
+  console.log("render todo list item");
   const onAddTodoListItem = () => {
     if (listItemText.length > 0) {
       handleAddTodoItems && handleAddTodoItems(listItemText);
