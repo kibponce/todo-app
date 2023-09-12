@@ -31,8 +31,8 @@ const ListItems = () => {
     setListItemText(e.target.value);
   };
 
-  const ItemsRemaining = ({ data }: { data: TodoItem[] }) => {
-    const remaining = data.length - data.filter((item) => item.isDone).length;
+  const ItemsRemaining = ({ items }: { items: TodoItem[] }) => {
+    const remaining = items.length - items.filter((item) => item.isDone).length;
 
     return (
       <div className="text-sm mt-4 text-right">
@@ -58,7 +58,7 @@ const ListItems = () => {
           errorMessage="Input should not be empty"
         />
         {selectedTodo && selectedTodo.items.length > 0 && (
-          <ItemsRemaining data={selectedTodo.items} />
+          <ItemsRemaining items={selectedTodo.items} />
         )}
 
         {selectedTodo && <ListItemLists items={selectedTodo.items} />}
