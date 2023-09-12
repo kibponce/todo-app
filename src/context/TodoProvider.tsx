@@ -1,4 +1,4 @@
-import React, { createContext, useState, useCallback } from "react";
+import React, { createContext, useState } from "react";
 
 interface Props {
   children: React.ReactNode;
@@ -59,57 +59,51 @@ export const TodoProvider = ({ children }: Props) => {
     setSelectedTodo(filteredTodos[filteredTodos.length - 1]);
   };
 
-  const handleAddTodoItems = useCallback(
-    (todoItemText: string) => {
-      if (selectedTodo) {
-        const todoIndex = todoLists.findIndex(
-          (item) => item.id === selectedTodo.id
-        );
+  const handleAddTodoItems = (todoItemText: string) => {
+    if (selectedTodo) {
+      const todoIndex = todoLists.findIndex(
+        (item) => item.id === selectedTodo.id
+      );
 
-        const itemId: number = Date.now();
-        // create a deep copy
-        let todos = [...todoLists];
+      const itemId: number = Date.now();
+      // create a shallow copy
+      let todos = [...todoLists];
 
-        // update array value using index
-        todos[todoIndex].items = [
-          ...todos[todoIndex].items,
-          { id: itemId, text: todoItemText, isDone: false },
-        ];
+      // update array value using index
+      todos[todoIndex].items = [
+        ...todos[todoIndex].items,
+        { id: itemId, text: todoItemText, isDone: false },
+      ];
 
-        setTodoLists(todos);
-      }
-    },
-    [selectedTodo, todoLists]
-  );
+      setTodoLists(todos);
+    }
+  };
 
-  const handleCompleteItem = useCallback(
-    (todoItem: TodoItem) => {
-      if (selectedTodo) {
-        const todoIndex = todoLists.findIndex(
-          (item) => item.id === selectedTodo.id
-        );
+  const handleCompleteItem = (todoItem: TodoItem) => {
+    if (selectedTodo) {
+      const todoIndex = todoLists.findIndex(
+        (item) => item.id === selectedTodo.id
+      );
 
-        // create a deep copy
-        let todos = [...todoLists];
+      // create a shallow copy
+      let todos = [...todoLists];
 
-        // get todo items
-        let selectedTodoItems = { ...selectedTodo }.items;
-        // update item
-        const todoItemIndex = selectedTodoItems.findIndex(
-          (item) => item.id === todoItem.id
-        )!;
+      // create a shallow copy get todo items
+      let selectedTodoItems = { ...selectedTodo }.items;
+      // update item
+      const todoItemIndex = selectedTodoItems.findIndex(
+        (item) => item.id === todoItem.id
+      )!;
 
-        // override todo items
-        selectedTodoItems[todoItemIndex] = todoItem;
-        todos[todoIndex].items = [...selectedTodoItems];
+      // override todo items
+      selectedTodoItems[todoItemIndex] = todoItem;
+      todos[todoIndex].items = [...selectedTodoItems];
 
-        setTodoLists(todos);
-      }
-    },
-    [selectedTodo, todoLists]
-  );
+      setTodoLists(todos);
+    }
+  };
 
-  const contextValue = {
+  const contextValue: iTodoContext = {
     todoLists,
     selectedTodo,
     handleAddTodo,
@@ -117,7 +111,7 @@ export const TodoProvider = ({ children }: Props) => {
     handleRemoveTodo,
     handleAddTodoItems,
     handleCompleteItem,
-  } as iTodoContext;
+  };
 
   return (
     <TodoContext.Provider value={contextValue}>{children}</TodoContext.Provider>
