@@ -1,5 +1,4 @@
 import React, { createContext, useState } from "react";
-import { deepClone } from "../helpers/utils";
 interface Props {
   children: React.ReactNode;
 }
@@ -66,15 +65,18 @@ export const TodoProvider = ({ children }: Props) => {
       );
 
       const itemId: number = Date.now();
-      // create a deep copy
-      let todos = deepClone(todoLists);
+      // create a shallow copy
+      let todos = [...todoLists];
 
       // push new todo item
-      todos[todoIndex].items.push({
-        id: itemId,
-        text: todoItemText,
-        isDone: false,
-      });
+      todos[todoIndex].items = [
+        ...todos[todoIndex].items,
+        {
+          id: itemId,
+          text: todoItemText,
+          isDone: false,
+        },
+      ];
 
       setSelectedTodo(todos[todoIndex]);
       setTodoLists(todos);
@@ -88,17 +90,17 @@ export const TodoProvider = ({ children }: Props) => {
       );
 
       // create a shallow copy
-      let todos: Todo[] = deepClone(todoLists);
+      let todos: Todo[] = [...todoLists];
 
-      // create a deep clone copy and get todo items
-      let selectedTodoItems: TodoItem[] = deepClone({ ...selectedTodo }).items;
+      // create a shallow copy and get todo items
+      let selectedTodoItems: TodoItem[] = { ...selectedTodo }.items;
 
-      // update item
+      // get index
       const todoItemIndex = selectedTodoItems.findIndex(
         (item) => item.id === todoItem.id
       )!;
 
-      // update/repleace todo list items
+      // update/replace todo list item
       selectedTodoItems[todoItemIndex] = todoItem;
 
       // update/repleace todo lists
