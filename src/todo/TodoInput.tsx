@@ -9,7 +9,7 @@ const TodoInput = () => {
 
   const onClickAddTodoList = () => {
     if (todoText.length > 0) {
-      handleAddTodo && handleAddTodo(todoText);
+      handleAddTodo(todoText);
     } else {
       setIsError(true);
     }

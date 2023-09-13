@@ -18,32 +18,28 @@ export interface TodoItem {
 interface iTodoContext {
   todoLists: Todo[];
   selectedTodo: Todo | null;
-  handleAddTodo?(text: string): void;
-  handleSelectTodo?(todo: Todo): void;
-  handleRemoveTodo?(todo: Todo): void;
-  handleAddTodoItems?(todoItemText: string): void;
-  handleCompleteItem?(todoItem: TodoItem): void;
+  handleAddTodo(text: string): void;
+  handleSelectTodo(todo: Todo): void;
+  handleRemoveTodo(todo: Todo): void;
+  handleAddTodoItems(todoItemText: string): void;
+  handleCompleteItem(todoItem: TodoItem): void;
 }
 
-export const TodoContext = createContext<iTodoContext>({
-  // default values
-  todoLists: [],
-  selectedTodo: null,
-});
+export const TodoContext = createContext<iTodoContext>({} as iTodoContext);
 
 export const TodoProvider = ({ children }: Props) => {
   const [todoLists, setTodoLists] = useState<Todo[]>([]);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 
   const handleAddTodo = (text: string) => {
-    const listId: number = Date.now();
-    const todoList = { id: listId, text: text, items: [] } as Todo;
+    const listId = Date.now();
+    const todo = { id: listId, text: text, items: [] };
 
     if (todoLists.length === 0) {
-      setSelectedTodo(todoList);
+      setSelectedTodo(todo);
     }
 
-    setTodoLists([...todoLists, todoList]);
+    setTodoLists([...todoLists, todo]);
   };
 
   const handleSelectTodo = (todo: Todo) => {
@@ -51,7 +47,7 @@ export const TodoProvider = ({ children }: Props) => {
   };
 
   const handleRemoveTodo = (todo: Todo) => {
-    // create a shallow copy and remove
+    // create a copy and remove
     const filteredTodos = [...todoLists].filter((item) => item.id !== todo.id);
 
     setTodoLists(filteredTodos);
@@ -60,17 +56,16 @@ export const TodoProvider = ({ children }: Props) => {
 
   const handleAddTodoItems = (todoItemText: string) => {
     if (selectedTodo) {
-      const todoIndex = todoLists.findIndex(
+      // create a copy
+      const todosListsCopy = [...todoLists];
+      const todoIndex = todosListsCopy.findIndex(
         (item) => item.id === selectedTodo.id
       );
-
       const itemId: number = Date.now();
-      // create a shallow copy
-      let todos = [...todoLists];
 
       // push new todo item
-      todos[todoIndex].items = [
-        ...todos[todoIndex].items,
+      todosListsCopy[todoIndex].items = [
+        ...todosListsCopy[todoIndex].items,
         {
           id: itemId,
           text: todoItemText,
@@ -78,23 +73,20 @@ export const TodoProvider = ({ children }: Props) => {
         },
       ];
 
-      setSelectedTodo(todos[todoIndex]);
-      setTodoLists(todos);
+      setSelectedTodo(todosListsCopy[todoIndex]);
+      setTodoLists(todosListsCopy);
     }
   };
 
   const handleCompleteItem = (todoItem: TodoItem) => {
     if (selectedTodo) {
-      const todoIndex = todoLists.findIndex(
+      // create a copy
+      const todoListsCopy = [...todoLists];
+      const todoIndex = todoListsCopy.findIndex(
         (item) => item.id === selectedTodo.id
       );
-
-      // create a shallow copy
-      let todos: Todo[] = [...todoLists];
-
-      // create a shallow copy and get todo items
-      let selectedTodoItems: TodoItem[] = { ...selectedTodo }.items;
-
+      // create a copy and get todo items
+      const selectedTodoItems = selectedTodo.items;
       // get index
       const todoItemIndex = selectedTodoItems.findIndex(
         (item) => item.id === todoItem.id
@@ -104,10 +96,10 @@ export const TodoProvider = ({ children }: Props) => {
       selectedTodoItems[todoItemIndex] = todoItem;
 
       // update/repleace todo lists
-      todos[todoIndex].items = selectedTodoItems;
+      todoListsCopy[todoIndex].items = selectedTodoItems;
 
-      setSelectedTodo(todos[todoIndex]);
-      setTodoLists(todos);
+      setSelectedTodo(todoListsCopy[todoIndex]);
+      setTodoLists(todoListsCopy);
     }
   };
 

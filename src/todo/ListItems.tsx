@@ -12,7 +12,7 @@ const ListItems = () => {
 
   const onAddTodoListItem = () => {
     if (listItemText.length > 0) {
-      handleAddTodoItems && handleAddTodoItems(listItemText);
+      handleAddTodoItems(listItemText);
     } else {
       setIsError(true);
     }
@@ -48,10 +48,11 @@ const ListItems = () => {
           errorMessage="Input should not be empty"
         />
         {selectedTodo && selectedTodo.items.length > 0 && (
-          <ListItemsRemaining items={selectedTodo.items} />
+          <>
+            <ListItemsRemaining items={selectedTodo.items} />
+            <ListItemLists items={selectedTodo.items} />
+          </>
         )}
-
-        {selectedTodo && <ListItemLists items={selectedTodo.items} />}
       </div>
     )
   );
