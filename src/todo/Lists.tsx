@@ -24,9 +24,9 @@ const Lists = () => {
 
   return (
     <ul className="w-full lg:w-2/5 lg:pr-6">
-      {todoLists.map((todo, index) => (
+      {todoLists.map((todo) => (
         <li
-          key={index}
+          key={todo.id}
           className={`flex justify-between items-center py-4 my-2 px-2 rounded-md cursor-pointer ${
             activeTodoId === todo.id && `bg-blue-100`
           } hover:bg-blue-100`}

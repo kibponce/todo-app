@@ -17,9 +17,9 @@ const ListItemLists = ({ items }: { items: TodoItem[] }) => {
   return (
     <div className="mt-2">
       <ul className="rounded-md divide-y divide-slate-400 border border-slate-400">
-        {items.map((item, index) => (
+        {items.map((item) => (
           <li
-            key={index}
+            key={item.id}
             className={`flex p-4 first:rounded-md first:rounded-t-md last:rounded-b-md ${
               item.isDone && "bg-slate-100"
             }`}
