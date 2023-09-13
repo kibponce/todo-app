@@ -17,9 +17,9 @@ export interface TodoItem {
 
 interface iTodoContext {
   todoLists: Todo[];
-  selectedTodo: Todo | null;
+  activeTodoId: number;
   handleAddTodo(text: string): void;
-  handleSelectTodo(todo: Todo): void;
+  handleSelectTodo(id: number): void;
   handleRemoveTodo(todo: Todo): void;
   handleAddTodoItems(todoItemText: string): void;
   handleCompleteItem(todoItem: TodoItem): void;
@@ -29,21 +29,21 @@ export const TodoContext = createContext<iTodoContext>({} as iTodoContext);
 
 export const TodoProvider = ({ children }: Props) => {
   const [todoLists, setTodoLists] = useState<Todo[]>([]);
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [activeTodoId, setActiveTodoId] = useState<number>(0);
 
   const handleAddTodo = (text: string) => {
     const listId = Date.now();
     const todo = { id: listId, text: text, items: [] };
 
     if (todoLists.length === 0) {
-      handleSelectTodo(todo);
+      handleSelectTodo(listId);
     }
 
     setTodoLists([...todoLists, todo]);
   };
 
-  const handleSelectTodo = (todo: Todo) => {
-    setSelectedTodo(todo);
+  const handleSelectTodo = (id: number) => {
+    setActiveTodoId(id);
   };
 
   const handleRemoveTodo = (todo: Todo) => {
@@ -51,61 +51,57 @@ export const TodoProvider = ({ children }: Props) => {
     const filteredTodos = [...todoLists].filter((item) => item.id !== todo.id);
 
     setTodoLists(filteredTodos);
-    setSelectedTodo(filteredTodos[filteredTodos.length - 1]);
+    setActiveTodoId(filteredTodos[filteredTodos.length - 1].id);
   };
 
   const handleAddTodoItems = (todoItemText: string) => {
-    if (selectedTodo) {
-      // create a copy
-      const todosListsCopy = [...todoLists];
-      const todoIndex = todosListsCopy.findIndex(
-        (item) => item.id === selectedTodo.id
-      );
-      const itemId: number = Date.now();
+    // create a copy
+    const todosListsCopy = [...todoLists];
+    const todoIndex = todosListsCopy.findIndex(
+      (item) => item.id === activeTodoId
+    );
+    const itemId: number = Date.now();
 
-      // push new todo item
-      todosListsCopy[todoIndex].items = [
-        ...todosListsCopy[todoIndex].items,
-        {
-          id: itemId,
-          text: todoItemText,
-          isDone: false,
-        },
-      ];
+    // push new todo item
+    todosListsCopy[todoIndex].items = [
+      ...todosListsCopy[todoIndex].items,
+      {
+        id: itemId,
+        text: todoItemText,
+        isDone: false,
+      },
+    ];
 
-      setSelectedTodo(todosListsCopy[todoIndex]);
-      setTodoLists(todosListsCopy);
-    }
+    setTodoLists(todosListsCopy);
   };
 
   const handleCompleteItem = (todoItem: TodoItem) => {
-    if (selectedTodo) {
-      // create a copy
-      const todoListsCopy = [...todoLists];
-      const todoIndex = todoListsCopy.findIndex(
-        (item) => item.id === selectedTodo.id
-      );
-      // create a copy and get todo items
-      const selectedTodoItems = selectedTodo.items;
-      // get index
-      const todoItemIndex = selectedTodoItems.findIndex(
-        (item) => item.id === todoItem.id
-      )!;
+    // create a copy
+    const todoListsCopy = [...todoLists];
+    const todoIndex = todoListsCopy.findIndex(
+      (item) => item.id === activeTodoId
+    );
 
-      // update/replace todo list item
-      selectedTodoItems[todoItemIndex] = todoItem;
+    // create a copy and get todo items
+    const selectedTodoItems = [...todoListsCopy[todoIndex].items];
 
-      // update/repleace todo lists
-      todoListsCopy[todoIndex].items = selectedTodoItems;
+    // get index
+    const todoItemIndex = selectedTodoItems.findIndex(
+      (item) => item.id === todoItem.id
+    )!;
 
-      setSelectedTodo(todoListsCopy[todoIndex]);
-      setTodoLists(todoListsCopy);
-    }
+    // update/replace todo list item
+    selectedTodoItems[todoItemIndex] = todoItem;
+
+    // update/repleace todo lists
+    todoListsCopy[todoIndex].items = selectedTodoItems;
+
+    setTodoLists(todoListsCopy);
   };
 
   const contextValue: iTodoContext = {
     todoLists,
-    selectedTodo,
+    activeTodoId,
     handleAddTodo,
     handleSelectTodo,
     handleRemoveTodo,

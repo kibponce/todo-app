@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent, ChangeEvent } from "react";
+import { useState, useMemo, KeyboardEvent, ChangeEvent } from "react";
 import { useContext } from "react";
 import { TodoContext } from "../context/TodoProvider";
 import ListItemsRemaining from "./ListItemsRemaining";
@@ -6,9 +6,15 @@ import ListItemLists from "./ListItemLists";
 import Input from "../components/Input";
 
 const ListItems = () => {
-  const { selectedTodo, handleAddTodoItems } = useContext(TodoContext);
+  const { todoLists, activeTodoId, handleAddTodoItems } =
+    useContext(TodoContext);
   const [listItemText, setListItemText] = useState<string>("");
   const [isError, setIsError] = useState(false);
+
+  const activeTodo = useMemo(
+    () => todoLists.find((item) => item.id === activeTodoId),
+    [todoLists, activeTodoId]
+  );
 
   const onAddTodoListItem = () => {
     if (listItemText.length > 0) {
@@ -33,8 +39,8 @@ const ListItems = () => {
   };
 
   return (
-    selectedTodo && (
-      <div className="w-full mt-8 lg:w-3/5 lg:mt-0">
+    <div className="w-full mt-8 lg:w-3/5 lg:mt-0">
+      {activeTodo && (
         <Input
           type="text"
           name="price"
@@ -47,14 +53,15 @@ const ListItems = () => {
           isError={isError}
           errorMessage="Input should not be empty"
         />
-        {selectedTodo && selectedTodo.items.length > 0 && (
-          <>
-            <ListItemsRemaining items={selectedTodo.items} />
-            <ListItemLists items={selectedTodo.items} />
-          </>
-        )}
-      </div>
-    )
+      )}
+
+      {activeTodo && activeTodo.items.length > 0 && (
+        <>
+          <ListItemsRemaining items={activeTodo.items} />
+          <ListItemLists items={activeTodo.items} />
+        </>
+      )}
+    </div>
   );
 };
 

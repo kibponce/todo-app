@@ -4,11 +4,11 @@ import Button from "../components/Button";
 import { TrashIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const Lists = () => {
-  const { todoLists, selectedTodo, handleSelectTodo, handleRemoveTodo } =
+  const { todoLists, activeTodoId, handleSelectTodo, handleRemoveTodo } =
     useContext(TodoContext);
 
   const onPressTodo = (todo: Todo) => {
-    handleSelectTodo(todo);
+    handleSelectTodo(todo.id);
   };
 
   const onPressRemoveTodo = (e: MouseEvent<HTMLButtonElement>, todo: Todo) => {
@@ -28,7 +28,7 @@ const Lists = () => {
         <li
           key={index}
           className={`flex justify-between items-center py-4 my-2 px-2 rounded-md cursor-pointer ${
-            selectedTodo?.id === todo.id && `bg-blue-100`
+            activeTodoId === todo.id && `bg-blue-100`
           } hover:bg-blue-100`}
           onClick={(e) => onPressTodo(todo)}
         >
