@@ -36,7 +36,7 @@ export const TodoProvider = ({ children }: Props) => {
     const todo = { id: listId, text: text, items: [] };
 
     if (todoLists.length === 0) {
-      setSelectedTodo(todo);
+      handleSelectTodo(todo);
     }
 
     setTodoLists([...todoLists, todo]);
