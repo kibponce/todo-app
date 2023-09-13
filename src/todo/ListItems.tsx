@@ -13,7 +13,9 @@ const ListItems = () => {
 
   const activeTodo = useMemo(
     () => todoLists.find((item) => item.id === activeTodoId),
-    [todoLists, activeTodoId]
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [activeTodoId]
   );
 
   const onAddTodoListItem = () => {
@@ -54,7 +56,6 @@ const ListItems = () => {
           errorMessage="Input should not be empty"
         />
       )}
-
       {activeTodo && activeTodo.items.length > 0 && (
         <>
           <ListItemsRemaining items={activeTodo.items} />
