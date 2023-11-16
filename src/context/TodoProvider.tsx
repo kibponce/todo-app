@@ -29,7 +29,7 @@ export const TodoContext = createContext<iTodoContext>({} as iTodoContext);
 
 export const TodoProvider = ({ children }: Props) => {
   const [todoLists, setTodoLists] = useState<Todo[]>([]);
-  const [activeTodoId, setActiveTodoId] = useState<number>(0);
+  const [activeTodoId, setActiveTodoId] = useState<number>(0); // 0 == empty
 
   const handleAddTodo = (text: string) => {
     const listId = Date.now();
@@ -50,8 +50,22 @@ export const TodoProvider = ({ children }: Props) => {
     // create a copy and remove
     const filteredTodos = [...todoLists].filter((item) => item.id !== todo.id);
 
+    // update the lists
     setTodoLists(filteredTodos);
-    setActiveTodoId(filteredTodos[filteredTodos.length - 1].id);
+
+    // if the deleted item is the active item
+    if (todo.id === activeTodoId) {
+      // get the index of the to be deleted todo
+      const deletedTodoIndex = todoLists.findIndex(
+        (item) => item.id === todo.id
+      );
+      // if no todo on the lists, set active id to empty
+      // else, set to active index
+      // default id: 0 (empty)
+      setActiveTodoId(
+        filteredTodos.length > 0 ? filteredTodos[deletedTodoIndex]?.id || 0 : 0
+      );
+    }
   };
 
   const handleAddTodoItems = (todoItemText: string) => {
